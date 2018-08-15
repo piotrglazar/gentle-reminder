@@ -9,3 +9,18 @@ slack {
   channelId = "channelId"
 }
 ```
+
+## scheduled events
+Event definitions should also live in the same config file as `slack`:
+```
+akka {
+  quartz {
+    schedules {
+      EveryMinuteHeartBeat {
+        description = "A cron job that fires off every minute"
+        expression = "0 * * ? * *"
+      }
+    }
+  }
+}
+```

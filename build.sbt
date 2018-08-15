@@ -11,6 +11,7 @@ lazy val root = (project in file("."))
       Utils.pimpedConfig,
       Utils.logging,
       Utils.slackClient,
+      Utils.scheduling,
       TestUtils.scalatest,
       TestUtils.mockito
     ) ++ Core.akka ++ Core.akkaTest,
