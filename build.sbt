@@ -19,3 +19,10 @@ lazy val root = (project in file("."))
     organization := "com.piotrglazar",
     publishMavenStyle := true
   )
+
+assemblyMergeStrategy in assembly := {
+  case PathList("module-info.class") => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
