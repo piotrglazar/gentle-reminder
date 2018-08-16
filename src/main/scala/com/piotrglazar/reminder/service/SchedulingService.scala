@@ -6,7 +6,7 @@ import com.piotrglazar.reminder.service.Worker.Tick
 import com.typesafe.akka.extension.quartz.QuartzSchedulerExtension
 import com.typesafe.scalalogging.LazyLogging
 
-class SchedulingService extends LazyLogging {
+object SchedulingService extends LazyLogging {
 
   def startScheduling(system: ActorSystem, jobs: List[JobConfig], receiver: ActorRef): Unit = {
     val quartz = QuartzSchedulerExtension(system)

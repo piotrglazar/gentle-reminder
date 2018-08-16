@@ -24,3 +24,4 @@ akka {
   }
 }
 ```
+Useful tool for managing cron expressions can be found [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
