@@ -10,8 +10,9 @@ import com.piotrglazar.reminder.service.MessageSink.SinkName
 import com.piotrglazar.reminder.service.Worker.Tick
 import com.piotrglazar.reminder.service.WorkerTest.CapturingSink
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FlatSpecLike, Matchers}
-import org.scalatest.concurrent.Eventually
+import org.scalatest.concurrent.{Eventually, PatienceConfiguration}
 import org.scalatest.mockito.MockitoSugar
+import org.scalatest.time.{Millis, Seconds, Span}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -53,7 +54,7 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
     worker ! Tick("job")
 
     // then
-    eventually {
+    eventually(PatienceConfiguration.Timeout(Span(10, Seconds)), PatienceConfiguration.Interval(Span(250, Millis))) {
       sink.receivedMessage.get() should be a 'defined
       sink.receivedMessage.get().get shouldEqual "message"
     }
