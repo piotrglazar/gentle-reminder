@@ -5,7 +5,7 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.piotrglazar.reminder.api.Routing
 import com.piotrglazar.reminder.config.ReminderConfig
-import com.piotrglazar.reminder.service.{SlackClient, SlackMessageSink}
+import com.piotrglazar.reminder.service._
 import com.typesafe.scalalogging.LazyLogging
 import configs.Result.{Failure, Success}
 
@@ -21,9 +21,15 @@ object GentleReminder extends App with LazyLogging {
 
     val slackClient = new SlackClient(fullConfig.slackConfig.token, fullConfig.slackConfig.channelId)
 
+    val loggingSink = new LoggingMessageSink
+
     val slackMessageSink = new SlackMessageSink(slackClient)
 
     val routing: Routing = new Routing(slackMessageSink)
+
+    val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs))
+
+    SchedulingService.startScheduling(system, fullConfig.jobs, worker)
 
     val bindingFuture = Http().bindAndHandle(routing.route, fullConfig.runConfig.host, fullConfig.runConfig.port)
 
