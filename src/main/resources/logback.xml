@@ -1,0 +1,14 @@
+<configuration>
+
+    <appender name="MAIN" class="ch.qos.logback.core.FileAppender">
+        <file>gentle-reminder.log</file>
+        <encoder>
+            <pattern>%date{dd/MM HH:mm:ss.SSS} %-5level [%.15thread] %logger{1} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="MAIN"/>
+    </root>
+
+</configuration>
