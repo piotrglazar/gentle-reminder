@@ -42,7 +42,7 @@ class Worker(sinks: List[MessageSink], jobs: List[JobConfig]) extends Actor with
     case SendResult(jobName, result) =>
       result match {
         case Success(_) =>
-          logger.debug(s"Successfully sent message for $jobName")
+          logger.info(s"Successfully sent message for $jobName")
         case Failure(t) =>
           logger.error(s"Failed to send message for $jobName", t)
       }
