@@ -27,7 +27,9 @@ object GentleReminder extends App with LazyLogging {
 
     val routing: Routing = new Routing(slackMessageSink)
 
-    val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs))
+    val userService: UserService = new UserService(fullConfig.users)
+
+    val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs, userService))
 
     SchedulingService.startScheduling(system, fullConfig.jobs, worker)
 

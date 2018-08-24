@@ -3,7 +3,7 @@ import scala.concurrent.Future
 
 class SlackMessageSink(private val slackClient: SlackClient) extends MessageSink {
 
-  override def sendMessage(message: String): Future[Unit] = {
+  override def sendMessage(message: String, users: List[String]): Future[Unit] = {
     slackClient.sendMessage(message)
   }
 
