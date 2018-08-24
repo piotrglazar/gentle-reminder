@@ -1,4 +1,5 @@
 import Libraries._
+import sbtrelease.ReleaseStateTransformations._
 
 lazy val root = (project in file("."))
   .settings(
@@ -17,7 +18,21 @@ lazy val root = (project in file("."))
     ) ++ Core.akka ++ Core.akkaTest,
     version := "0.1.0",
     organization := "com.piotrglazar",
-    publishMavenStyle := true
+    publishMavenStyle := false,
+    publishArtifact := false,
+    skip in publish := true,
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runClean,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      releaseStepCommandAndRemaining("publish"),
+      setNextVersion,
+      commitNextVersion,
+      pushChanges)
   )
 
 assemblyMergeStrategy in assembly := {
