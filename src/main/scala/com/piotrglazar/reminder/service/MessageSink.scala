@@ -12,5 +12,5 @@ trait MessageSink {
 
   def name: SinkName
 
-  def sendMessage(message: String): Future[Unit]
+  def sendMessage(message: String, users: List[String] = List.empty): Future[Unit]
 }
