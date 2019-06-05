@@ -27,11 +27,13 @@ object Libraries {
     lazy val logging: ModuleID = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0"
     lazy val scheduling: ModuleID = "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.1-akka-2.5.x"
     lazy val slackClient: ModuleID = "com.github.gilbertw1" %% "slack-scala-client" % "0.2.3"
+    lazy val htmlParsing: ModuleID = "org.jsoup" % "jsoup" % "1.11.3"
   }
 
   object TestUtils {
     lazy val scalatest: ModuleID = "org.scalatest" %% "scalatest" % "3.0.5" % Test
     lazy val mockito: ModuleID = "org.mockito" % "mockito-core" % "2.19.0" % Test
+    lazy val restito: ModuleID = "com.xebialabs.restito" % "restito" % "0.9.3" % Test
   }
 
 }
