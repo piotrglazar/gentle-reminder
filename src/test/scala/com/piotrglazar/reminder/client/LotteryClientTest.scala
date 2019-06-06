@@ -3,9 +3,12 @@ package com.piotrglazar.reminder.client
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.testkit.TestKit
-import com.xebialabs.restito.builder.stub.StubHttp
-import com.xebialabs.restito.semantics.{Action, Condition}
+import com.piotrglazar.reminder.util.PageFetchExceptions._
+import com.xebialabs.restito.builder.stub.StubHttp.whenHttp
+import com.xebialabs.restito.semantics.Action.{resourceContent, status}
+import com.xebialabs.restito.semantics.Condition
 import com.xebialabs.restito.server.StubServer
+import org.glassfish.grizzly.http.util.HttpStatus.{INTERNAL_SERVER_ERROR_500, MOVED_PERMANENTLY_301, NOT_FOUND_404}
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FlatSpecLike, Matchers}
 
 import scala.concurrent.Await
@@ -23,9 +26,9 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
 
   it should "fetch lottery page" in {
     // given
-    StubHttp.whenHttp(stubServer)
+    whenHttp(stubServer)
       .`match`(Condition.get(endpoint))
-      .`then`(Action.resourceContent(getClass.getResource("/lotto-default-prize.html")))
+      .`then`(resourceContent(getClass.getResource("/lotto-default-prize.html")))
 
     // when
     val result = client.fetchRawPage()
@@ -34,14 +37,59 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
     Await.result(result, 1 second).length should be > 0
   }
 
+  it should "propagate Http 404" in {
+    // given
+    whenHttp(stubServer)
+      .`match`(Condition.get(endpoint))
+      .`then`(status(NOT_FOUND_404))
+
+    // when
+    val result = client.fetchRawPage()
+
+    // then
+    a[PageNotFoundException] should be thrownBy {
+      Await.result(result, 1 second)
+    }
+  }
+
+  it should "propagate Http 500" in {
+    // given
+    whenHttp(stubServer)
+      .`match`(Condition.get(endpoint))
+      .`then`(status(INTERNAL_SERVER_ERROR_500))
+
+    // when
+    val result = client.fetchRawPage()
+
+    // then
+    an[InternalServerErrorException] should be thrownBy {
+      Await.result(result, 1 second)
+    }
+  }
+
+  it should "propagate unexpected Http status" in {
+    // given
+    whenHttp(stubServer)
+      .`match`(Condition.get(endpoint))
+      .`then`(status(MOVED_PERMANENTLY_301))
+
+    // when
+    val result = client.fetchRawPage()
+
+    // then
+    an[UnexpectedStatusCodeException] should be thrownBy {
+      Await.result(result, 1 second)
+    }
+  }
+
   override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system, verifySystemShutdown = true)
   }
 
   before {
     stubServer = new StubServer().run()
-    client = new LotteryClient(s"http://localhost:${stubServer.getPort}$endpoint")(system, ActorMaterializer()(system),
-      system.dispatcher)
+    client = new LotteryClient(s"http://localhost:${stubServer.getPort}$endpoint")(system,
+      ActorMaterializer()(system), system.dispatcher)
   }
 
   after {
