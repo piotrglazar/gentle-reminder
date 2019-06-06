@@ -6,7 +6,7 @@ import scala.io.Source
 
 class LotteryPageParserTest extends FlatSpec with Matchers {
 
-  private lazy val pageWithDefaultPrize = Source.fromFile(getClass.getResource("/lotto2.html").toURI, "UTF-8").mkString
+  private lazy val pageWithDefaultPrize = Source.fromFile(getClass.getResource("/lotto-default-prize.html").toURI, "UTF-8").mkString
 
   private val parser = new LotteryPageParser
 

@@ -25,7 +25,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
     // given
     StubHttp.whenHttp(stubServer)
       .`match`(Condition.get(endpoint))
-      .`then`(Action.resourceContent(getClass.getResource("/lotto2.html")))
+      .`then`(Action.resourceContent(getClass.getResource("/lotto-default-prize.html")))
 
     // when
     val result = client.fetchRawPage()
