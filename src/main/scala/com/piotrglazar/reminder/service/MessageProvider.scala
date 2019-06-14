@@ -20,5 +20,3 @@ class LotteryMessageProvider(private val lotteryService: LotteryService)
       .map(prize => messageTemplate.format(prize))
   }
 }
-
-

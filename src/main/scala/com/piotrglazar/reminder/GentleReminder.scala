@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.piotrglazar.reminder.api.Routing
+import com.piotrglazar.reminder.client.{LotteryClient, LotteryPageParser}
 import com.piotrglazar.reminder.config.ReminderConfig
 import com.piotrglazar.reminder.service._
 import com.typesafe.scalalogging.LazyLogging
@@ -29,9 +30,14 @@ object GentleReminder extends App with LazyLogging {
 
     val userService: UserService = new UserService(fullConfig.users)
 
-//    val lotteryMessageProvider: LotteryMessageProvider = new LotteryMessageProvider(new LotteryService())
+    val lotteryClient: LotteryClient = new LotteryClient(fullConfig.businessConfig.lotteryUrl)
 
-    val messageProviderRegistry: MessageProviderRegistry = new MessageProviderRegistry(List())
+    val lotteryPageParser: LotteryPageParser = new LotteryPageParser()
+
+    val lotteryMessageProvider: LotteryMessageProvider = new LotteryMessageProvider(
+      new LotteryService(lotteryClient, lotteryPageParser))
+
+    val messageProviderRegistry: MessageProviderRegistry = new MessageProviderRegistry(List(lotteryMessageProvider))
 
     val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs, userService,
       messageProviderRegistry))
