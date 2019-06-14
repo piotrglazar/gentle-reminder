@@ -8,7 +8,8 @@ import configs.{Configs, Result}
 object ReminderConfig extends LazyLogging {
   case class RunConfig(host: String, port: Int)
   case class SlackConfig(token: String, channelId: String)
-  case class JobConfig(name: String, sink: String, message: String, users: List[String])
+  case class JobConfig(name: String, sink: String, message: String, users: List[String],
+                       messageProvider: Option[String] = None)
   case class UserConfig(name: String, slackName: String)
 
   def read(): Result[ReminderConfig] = {

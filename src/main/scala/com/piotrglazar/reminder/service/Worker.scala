@@ -17,11 +17,13 @@ object Worker {
 
   case class SendResult(jobName: String, result: Try[Unit])
 
-  def props(sinks: List[MessageSink], jobs: List[JobConfig], userService: UserService): Props =
-    Props(new Worker(sinks, jobs, userService))
+  def props(sinks: List[MessageSink], jobs: List[JobConfig], userService: UserService,
+            registry: MessageProviderRegistry): Props =
+    Props(new Worker(sinks, jobs, userService, registry))
 }
 
-class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userService: UserService) extends Actor with LazyLogging {
+class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userService: UserService,
+             private val registry: MessageProviderRegistry) extends Actor with LazyLogging {
 
   private implicit val executor: ExecutionContextExecutor = context.dispatcher
 

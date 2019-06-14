@@ -29,7 +29,12 @@ object GentleReminder extends App with LazyLogging {
 
     val userService: UserService = new UserService(fullConfig.users)
 
-    val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs, userService))
+//    val lotteryMessageProvider: LotteryMessageProvider = new LotteryMessageProvider(new LotteryService())
+
+    val messageProviderRegistry: MessageProviderRegistry = new MessageProviderRegistry(List())
+
+    val worker = system.actorOf(Worker.props(List(loggingSink, slackMessageSink), fullConfig.jobs, userService,
+      messageProviderRegistry))
 
     SchedulingService.startScheduling(system, fullConfig.jobs, worker)
 
