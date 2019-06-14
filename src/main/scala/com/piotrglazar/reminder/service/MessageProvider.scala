@@ -1,6 +1,6 @@
 package com.piotrglazar.reminder.service
 
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.{ExecutionContext, Future}
 
 trait MessageProvider {
 
@@ -10,7 +10,7 @@ trait MessageProvider {
 }
 
 class LotteryMessageProvider(private val lotteryService: LotteryService)
-                            (private implicit val executionContextExecutor: ExecutionContextExecutor)
+                            (private implicit val executionContext: ExecutionContext)
   extends MessageProvider {
 
   override def name: String = "lottery"
