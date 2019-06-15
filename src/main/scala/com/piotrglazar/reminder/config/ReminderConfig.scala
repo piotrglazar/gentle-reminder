@@ -11,7 +11,7 @@ object ReminderConfig extends LazyLogging {
   case class JobConfig(name: String, sink: String, message: String, users: List[String],
                        messageProvider: Option[String] = None)
   case class UserConfig(name: String, slackName: String)
-  case class BusinessConfig(lotteryUrl: String)
+  case class BusinessConfig(lotteryUrl: String, lotteryThreshold: Int)
 
   def read(): Result[ReminderConfig] = {
     val config = ConfigFactory.load()

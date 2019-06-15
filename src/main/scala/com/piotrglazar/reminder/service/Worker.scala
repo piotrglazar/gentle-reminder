@@ -41,7 +41,7 @@ class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userSe
       } {
         val users = job.users.flatMap(userService.getExternalUserName)
         val message = registry.buildMessage(jobName, job.message, job.messageProvider)
-        message.foreach(m => sink.sendMessage(m, users).onComplete(r => self ! SendResult(jobName, r)))
+        message.foreach(_.foreach(m => sink.sendMessage(m, users).onComplete(r => self ! SendResult(jobName, r))))
       }
     case SendResult(jobName, result) =>
       result match {
