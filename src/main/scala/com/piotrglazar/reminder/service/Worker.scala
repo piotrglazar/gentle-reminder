@@ -18,12 +18,12 @@ object Worker {
   case class SendResult(jobName: String, result: Try[Unit])
 
   def props(sinks: List[MessageSink], jobs: List[JobConfig], userService: UserService,
-            registry: MessageProviderRegistry): Props =
+            registry: MessageServiceRegistry): Props =
     Props(new Worker(sinks, jobs, userService, registry))
 }
 
 class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userService: UserService,
-             private val registry: MessageProviderRegistry) extends Actor with LazyLogging {
+             private val registry: MessageServiceRegistry) extends Actor with LazyLogging {
 
   private implicit val executor: ExecutionContextExecutor = context.dispatcher
 

@@ -127,5 +127,5 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
     }
   }
 
-  private def emptyRegistry: MessageProviderRegistry = new MessageProviderRegistry(List.empty)
+  private def emptyRegistry: MessageServiceRegistry = new MessageServiceRegistry(List.empty)
 }

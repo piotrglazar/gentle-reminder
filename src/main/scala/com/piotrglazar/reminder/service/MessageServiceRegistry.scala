@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.Future
 
-class MessageProviderRegistry(providers: List[MessageService]) extends LazyLogging {
+class MessageServiceRegistry(providers: List[MessageService]) extends LazyLogging {
 
   private val providersByName = providers.groupBy(_.name).mapValues(_.head).map(identity)
 

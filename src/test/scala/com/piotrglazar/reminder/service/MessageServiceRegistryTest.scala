@@ -22,7 +22,7 @@ class MessageServiceRegistryTest extends FlatSpec with Matchers {
   private val jobName = "job"
   private val template = "template"
 
-  private val registry = new MessageProviderRegistry(List(new TestMessageService))
+  private val registry = new MessageServiceRegistry(List(new TestMessageService))
 
   it should "use provided template as message if job does not require a provider" in {
     // when
