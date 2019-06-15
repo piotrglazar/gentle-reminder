@@ -34,7 +34,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
     val result = client.fetchRawPage()
 
     // then
-    Await.result(result, 1 second).length should be > 0
+    Await.result(result, 10 seconds).length should be > 0
   }
 
   it should "propagate Http 404" in {
@@ -48,7 +48,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
 
     // then
     a[PageNotFoundException] should be thrownBy {
-      Await.result(result, 1 second)
+      Await.result(result, 10 seconds)
     }
   }
 
@@ -63,7 +63,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
 
     // then
     an[InternalServerErrorException] should be thrownBy {
-      Await.result(result, 1 second)
+      Await.result(result, 10 seconds)
     }
   }
 
@@ -78,7 +78,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
 
     // then
     an[UnexpectedStatusCodeException] should be thrownBy {
-      Await.result(result, 1 second)
+      Await.result(result, 10 seconds)
     }
   }
 

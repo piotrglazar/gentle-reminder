@@ -23,7 +23,7 @@ class LotteryClient(private val url: String)(private implicit val system: ActorS
         r.status match {
           case OK =>
             logger.info(s"Fetching from $url - OK")
-            r.entity.toStrict(1 second)
+            r.entity.toStrict(10 seconds)
           case NotFound =>
             logger.error(s"Fetching from $url - NotFound")
             throw new PageNotFoundException(url)
