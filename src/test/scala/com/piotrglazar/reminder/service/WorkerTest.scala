@@ -53,7 +53,8 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
   it should "forward message to appropriate sink" in {
     // given
     val sink = new CapturingSink("sink")
-    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "sink", "message", List.empty)), DummyUserService))
+    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "sink", "message", List.empty)),
+      DummyUserService, emptyRegistry))
 
     // when
     worker ! Tick("job")
@@ -68,7 +69,8 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
   it should "do nothing when there is no such job" in {
     // given
     val sink = new CapturingSink("sink")
-    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "sink", "message", List.empty)), DummyUserService))
+    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "sink", "message", List.empty)),
+      DummyUserService, emptyRegistry))
 
     // when
     worker ! Tick("unknown job")
@@ -79,7 +81,8 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
   it should "do nothing when there is no such sink" in {
     // given
     val sink = new CapturingSink("sink")
-    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "unknown sink", "message", List.empty)), DummyUserService))
+    worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "unknown sink", "message", List.empty)),
+      DummyUserService, emptyRegistry))
 
     // when
     worker ! Tick("job")
@@ -97,7 +100,7 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
       endLatch.countDown()
     }))
     worker = system.actorOf(Worker.props(List(sink1, sink2), List(JobConfig("job1", "sink1", "message", List.empty),
-      JobConfig("job2", "sink2", "message", List.empty)), DummyUserService))
+      JobConfig("job2", "sink2", "message", List.empty)), DummyUserService, emptyRegistry))
 
     // when
     worker ! Tick("job1")
@@ -112,7 +115,7 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
     val sink = new CapturingSink("sink")
     worker = system.actorOf(Worker.props(List(sink), List(JobConfig("job", "sink", "message", List("Alice", "Bob"))),
       // omitting Bob on purpose
-      new UserService(List(UserConfig("Alice", "ecila")))))
+      new UserService(List(UserConfig("Alice", "ecila"))), emptyRegistry))
 
     // when
     worker ! Tick("job")
@@ -123,4 +126,6 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
       sink.receivedMessageUsers.get().head shouldEqual "ecila"
     }
   }
+
+  private def emptyRegistry: MessageServiceRegistry = new MessageServiceRegistry(List.empty)
 }

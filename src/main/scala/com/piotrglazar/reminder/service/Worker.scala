@@ -17,11 +17,13 @@ object Worker {
 
   case class SendResult(jobName: String, result: Try[Unit])
 
-  def props(sinks: List[MessageSink], jobs: List[JobConfig], userService: UserService): Props =
-    Props(new Worker(sinks, jobs, userService))
+  def props(sinks: List[MessageSink], jobs: List[JobConfig], userService: UserService,
+            registry: MessageServiceRegistry): Props =
+    Props(new Worker(sinks, jobs, userService, registry))
 }
 
-class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userService: UserService) extends Actor with LazyLogging {
+class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userService: UserService,
+             private val registry: MessageServiceRegistry) extends Actor with LazyLogging {
 
   private implicit val executor: ExecutionContextExecutor = context.dispatcher
 
@@ -38,7 +40,8 @@ class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userSe
         sink <- sinkByName.get(SinkName(job.sink))
       } {
         val users = job.users.flatMap(userService.getExternalUserName)
-        sink.sendMessage(job.message, users).onComplete(r => self ! SendResult(jobName, r))
+        val message = registry.buildMessage(jobName, job.message, job.messageProvider)
+        message.foreach(_.foreach(m => sink.sendMessage(m, users).onComplete(r => self ! SendResult(jobName, r))))
       }
     case SendResult(jobName, result) =>
       result match {
