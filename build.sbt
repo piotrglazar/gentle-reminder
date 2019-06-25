@@ -13,7 +13,6 @@ lazy val root = (project in file("."))
       Utils.logging,
       Utils.slackClient,
       Utils.scheduling,
-      Utils.htmlParsing,
       Utils.akkaHttpCirce,
       TestUtils.scalatest,
       TestUtils.mockito,

@@ -3,7 +3,7 @@ package com.piotrglazar.reminder.client
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.testkit.TestKit
-import com.piotrglazar.reminder.util.PageFetchExceptions._
+import com.piotrglazar.reminder.util.PageFetchExceptions.{InternalServerErrorException, PageNotFoundException, UnexpectedStatusCodeException}
 import com.xebialabs.restito.builder.stub.StubHttp.whenHttp
 import com.xebialabs.restito.semantics.Action.{resourceContent, status}
 import com.xebialabs.restito.semantics.Condition
@@ -24,19 +24,6 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
 
   private var client: LotteryClient = _
 
-  it should "fetch lottery page" in {
-    // given
-    whenHttp(stubServer)
-      .`match`(Condition.get(endpoint))
-      .`then`(resourceContent(getClass.getResource("/lotto-default-prize.html")))
-
-    // when
-    val result = client.fetchRawPage()
-
-    // then
-    Await.result(result, 10 seconds).length should be > 0
-  }
-
   it should "propagate Http 404" in {
     // given
     whenHttp(stubServer)
@@ -44,7 +31,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
       .`then`(status(NOT_FOUND_404))
 
     // when
-    val result = client.fetchRawPage()
+    val result = client.fetchPrize()
 
     // then
     a[PageNotFoundException] should be thrownBy {
@@ -59,7 +46,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
       .`then`(status(INTERNAL_SERVER_ERROR_500))
 
     // when
-    val result = client.fetchRawPage()
+    val result = client.fetchPrize()
 
     // then
     an[InternalServerErrorException] should be thrownBy {
@@ -74,7 +61,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
       .`then`(status(MOVED_PERMANENTLY_301))
 
     // when
-    val result = client.fetchRawPage()
+    val result = client.fetchPrize()
 
     // then
     an[UnexpectedStatusCodeException] should be thrownBy {
@@ -102,7 +89,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
   before {
     stubServer = new StubServer().run()
     val url = s"http://localhost:${stubServer.getPort}$endpoint"
-    client = new LotteryClient(url, url)(system,
+    client = new LotteryClient(url)(system,
       ActorMaterializer()(system), system.dispatcher)
   }
 

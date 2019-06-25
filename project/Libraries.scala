@@ -29,7 +29,6 @@ object Libraries {
     lazy val logging: ModuleID = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0"
     lazy val scheduling: ModuleID = "com.enragedginger" %% "akka-quartz-scheduler" % "1.6.1-akka-2.5.x"
     lazy val slackClient: ModuleID = "com.github.gilbertw1" %% "slack-scala-client" % "0.2.3"
-    lazy val htmlParsing: ModuleID = "org.jsoup" % "jsoup" % "1.11.3"
     lazy val circe: Seq[ModuleID] = Seq(
       "io.circe" %% "circe-core",
       "io.circe" %% "circe-generic",
