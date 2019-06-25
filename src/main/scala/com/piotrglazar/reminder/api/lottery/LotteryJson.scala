@@ -18,5 +18,5 @@ object LotteryJson {
   case class Draw(gameName: String, id: String, status: String, openTime: Long, closeTime: Long, drawTime: Long,
     wagerAvailable: Boolean, wagerCloseTime: Long, estimatedJackpot: Long, subscriptionAvailable: Boolean)
 
-
+  case class Draws(draws: List[Draw])
 }

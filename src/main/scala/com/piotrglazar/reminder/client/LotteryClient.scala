@@ -4,15 +4,20 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.StatusCodes.{InternalServerError, NotFound, OK}
 import akka.http.scaladsl.model._
+import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.Materializer
+import com.piotrglazar.reminder.api.lottery.LotteryJson.{Draw, Draws}
 import com.piotrglazar.reminder.util.PageFetchExceptions.{InternalServerErrorException, PageNotFoundException, UnexpectedStatusCodeException}
 import com.typesafe.scalalogging.LazyLogging
+import io.circe.Json
+import io.circe.generic.auto._
+import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.language.postfixOps
 
-class LotteryClient(private val url: String)(private implicit val system: ActorSystem,
+class LotteryClient(private val url: String, private val apiUrl: String)(private implicit val system: ActorSystem,
                                  private implicit val materializer: Materializer,
                                  private implicit val executionContext: ExecutionContextExecutor) extends LazyLogging {
 
@@ -36,5 +41,13 @@ class LotteryClient(private val url: String)(private implicit val system: ActorS
         }
       }
       .map(_.data.utf8String)
+  }
+
+  def fetchPrize(): Future[Long] = {
+    Http().singleRequest(HttpRequest(uri = url))
+      .flatMap(Unmarshal(_).to[Draws])
+      .map(_.draws.head)
+      // convert from coins
+      .map(_.estimatedJackpot / 100)
   }
 }

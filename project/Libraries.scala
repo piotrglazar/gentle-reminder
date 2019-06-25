@@ -35,6 +35,7 @@ object Libraries {
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser"
     ).map(_ % circeVersion)
+    lazy val akkaHttpCirce: ModuleID = "de.heikoseeberger" %% "akka-http-circe" % "1.27.0"
   }
 
   object TestUtils {

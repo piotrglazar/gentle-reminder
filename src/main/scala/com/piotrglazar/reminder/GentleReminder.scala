@@ -30,7 +30,8 @@ object GentleReminder extends App with LazyLogging {
 
     val userService: UserService = new UserService(fullConfig.users)
 
-    val lotteryClient: LotteryClient = new LotteryClient(fullConfig.businessConfig.lotteryUrl)
+    val lotteryClient: LotteryClient = new LotteryClient(fullConfig.businessConfig.lotteryUrl,
+      fullConfig.businessConfig.lotteryApiUrl)
 
     val lotteryPageParser: LotteryPageParser = new LotteryPageParser()
 

@@ -82,13 +82,27 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
     }
   }
 
+  it should "fetch from api" in {
+    // given
+    whenHttp(stubServer)
+      .`match`(Condition.get(endpoint))
+      .`then`(resourceContent(getClass.getResource("/lotto-response.json")))
+
+    // when
+    val result = client.fetchPrize()
+
+    // then
+    Await.result(result, 10 seconds) shouldBe 15000000L
+  }
+
   override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system, verifySystemShutdown = true)
   }
 
   before {
     stubServer = new StubServer().run()
-    client = new LotteryClient(s"http://localhost:${stubServer.getPort}$endpoint")(system,
+    val url = s"http://localhost:${stubServer.getPort}$endpoint"
+    client = new LotteryClient(url, url)(system,
       ActorMaterializer()(system), system.dispatcher)
   }
 

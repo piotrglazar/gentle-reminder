@@ -1,14 +1,13 @@
 package com.piotrglazar.reminder.client
 
+import com.piotrglazar.reminder.TestUtils
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.io.Source
 
 class LotteryPageParserTest extends FlatSpec with Matchers {
 
-  private lazy val pageWithDefaultPrize = readPage("/lotto-default-prize.html")
+  private lazy val pageWithDefaultPrize = TestUtils.readResource("/lotto-default-prize.html")
 
-  private lazy val pageWithHigherPrize = readPage("/lotto-higher-prize.html")
+  private lazy val pageWithHigherPrize = TestUtils.readResource("/lotto-higher-prize.html")
 
   private val parser = new LotteryPageParser
 
@@ -33,7 +32,4 @@ class LotteryPageParserTest extends FlatSpec with Matchers {
     result should be a 'success
     result.get shouldBe 6000000
   }
-
-  private def readPage(resourceName: String): String =
-    Source.fromFile(getClass.getResource(resourceName).toURI, "UTF-8").mkString
 }
