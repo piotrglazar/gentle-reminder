@@ -1,0 +1,114 @@
+{
+  "draws": [
+    {
+      "gameName": "Lotto",
+      "id": "3511",
+      "status": "OPEN",
+      "openTime": 1561233000000,
+      "closeTime": 1561491300000,
+      "drawTime": 1561491300000,
+      "wagerAvailable": true,
+      "wagerCloseTime": 1561491300000,
+      "gameRuleSet": {
+        "basePrice": 300,
+        "maxPrice": 200000,
+        "minBoards": 1,
+        "maxBoards": 10,
+        "minPrimarySelections": 6,
+        "maxPrimarySelections": 6,
+        "quickPickAvailable": true,
+        "multiplierAvailable": true,
+        "multiplierPrice": 100,
+        "durations": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "primarySelectionsLowNumber": 1,
+        "primarySelectionsHighNumber": 49,
+        "gameId": "8",
+        "subscriptionRules": {
+          "durations": [
+            1
+          ],
+          "durationUnit": "DRAWS"
+        },
+        "basePointsPrice": 300,
+        "betTypes": [
+          {
+            "id": "Podstawowy",
+            "primarySelectionsRules": {
+              "numberOfSelections": 6
+            },
+            "combinations": 1
+          }
+        ],
+        "selectionDescriptions": []
+      },
+      "estimatedJackpot": 1500000000,
+      "subscriptionAvailable": true
+    },
+    {
+      "gameName": "Lotto",
+      "id": "3512",
+      "status": "OPEN",
+      "openTime": 1561492200000,
+      "closeTime": 1561664100000,
+      "drawTime": 1561664100000,
+      "wagerAvailable": true,
+      "wagerCloseTime": 1561664100000,
+      "gameRuleSet": {
+        "basePrice": 300,
+        "maxPrice": 200000,
+        "minBoards": 1,
+        "maxBoards": 10,
+        "minPrimarySelections": 6,
+        "maxPrimarySelections": 6,
+        "quickPickAvailable": true,
+        "multiplierAvailable": true,
+        "multiplierPrice": 100,
+        "durations": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "primarySelectionsLowNumber": 1,
+        "primarySelectionsHighNumber": 49,
+        "gameId": "8",
+        "subscriptionRules": {
+          "durations": [
+            1
+          ],
+          "durationUnit": "DRAWS"
+        },
+        "basePointsPrice": 300,
+        "betTypes": [
+          {
+            "id": "Podstawowy",
+            "primarySelectionsRules": {
+              "numberOfSelections": 6
+            },
+            "combinations": 1
+          }
+        ],
+        "selectionDescriptions": []
+      },
+      "estimatedJackpot": 1500000000,
+      "subscriptionAvailable": true
+    }
+  ]
+}

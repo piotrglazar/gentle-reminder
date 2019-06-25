@@ -20,7 +20,7 @@ class LotteryPageParserTest extends FlatSpec with Matchers {
 
     // then
     result should be a 'success
-    result.get == 2000000
+    result.get shouldBe 2000000
   }
 
   it should "extract higher prize" in {
@@ -31,7 +31,7 @@ class LotteryPageParserTest extends FlatSpec with Matchers {
 
     // then
     result should be a 'success
-    result.get == 6000000
+    result.get shouldBe 6000000
   }
 
   private def readPage(resourceName: String): String =

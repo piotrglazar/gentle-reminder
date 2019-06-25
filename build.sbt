@@ -17,7 +17,7 @@ lazy val root = (project in file("."))
       TestUtils.scalatest,
       TestUtils.mockito,
       TestUtils.restito
-    ) ++ Core.akka ++ Core.akkaTest,
+    ) ++ Core.akka ++ Core.akkaTest ++ Utils.circe,
     organization := "com.piotrglazar",
     publishMavenStyle := false,
     publishArtifact := false,
