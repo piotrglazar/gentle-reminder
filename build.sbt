@@ -13,11 +13,11 @@ lazy val root = (project in file("."))
       Utils.logging,
       Utils.slackClient,
       Utils.scheduling,
-      Utils.htmlParsing,
+      Utils.akkaHttpCirce,
       TestUtils.scalatest,
       TestUtils.mockito,
       TestUtils.restito
-    ) ++ Core.akka ++ Core.akkaTest,
+    ) ++ Core.akka ++ Core.akkaTest ++ Utils.circe,
     organization := "com.piotrglazar",
     publishMavenStyle := false,
     publishArtifact := false,

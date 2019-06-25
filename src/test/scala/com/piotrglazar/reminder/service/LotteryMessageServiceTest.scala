@@ -1,26 +1,25 @@
 package com.piotrglazar.reminder.service
 
-import com.piotrglazar.reminder.client.{LotteryClient, LotteryPageParser}
-import org.mockito.BDDMockito
+import com.piotrglazar.reminder.client.LotteryClient
 import org.mockito.BDDMockito.given
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{FlatSpec, Matchers}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
-import scala.util.Success
 
 class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar {
 
   private val messageTemplate = "%s"
 
   private val client = mock[LotteryClient]
-  private val parser = mock[LotteryPageParser]
   private val threshold = 1000
+  private val highPrize = 1234L
+  private val lowPrize = 123L
 
-  private val provider = new LotteryMessageService(client, parser, threshold)
+  private val provider = new LotteryMessageService(client, threshold)
 
   it should "provide name" in {
     // given provider
@@ -34,8 +33,7 @@ class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar
 
   it should "build message" in {
     // given
-    given(client.fetchRawPage()).willReturn(Future.successful("page"))
-    given(parser.parse("page")).willReturn(Success(1234))
+    given(client.fetchPrize()).willReturn(Future.successful(highPrize))
 
     // when
     val message = provider.buildMessage(messageTemplate)
@@ -46,8 +44,7 @@ class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar
 
   it should "not build message if prize is lower than threshold" in {
     // given
-    given(client.fetchRawPage()).willReturn(Future.successful("page"))
-    given(parser.parse("page")).willReturn(Success(threshold - 1))
+    given(client.fetchPrize()).willReturn(Future.successful(lowPrize))
 
     // when
     val message = provider.buildMessage(messageTemplate)
