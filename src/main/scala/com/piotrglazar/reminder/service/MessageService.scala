@@ -1,5 +1,8 @@
 package com.piotrglazar.reminder.service
 
+import java.text.NumberFormat
+import java.util.Locale
+
 import com.piotrglazar.reminder.client.LotteryClient
 import com.typesafe.scalalogging.LazyLogging
 
@@ -16,6 +19,8 @@ class LotteryMessageService(private val client: LotteryClient, private val thres
                            (private implicit val executionContext: ExecutionContext)
   extends MessageService with LazyLogging {
 
+  private val numberFormat = NumberFormat.getCurrencyInstance(new Locale("pl", "PL"))
+
   override def name: String = "lottery"
 
   override def buildMessage(messageTemplate: String): Future[Option[String]] = {
@@ -25,7 +30,8 @@ class LotteryMessageService(private val client: LotteryClient, private val thres
           logger.info(s"Fetched prize $lowPrize is lower than $threshold. Message will not be generated")
           None
         case prize =>
-          Some(messageTemplate.format(prize))
+          val prettyPrize = numberFormat.format(prize)
+          Some(messageTemplate.format(prettyPrize))
       }
   }
 }

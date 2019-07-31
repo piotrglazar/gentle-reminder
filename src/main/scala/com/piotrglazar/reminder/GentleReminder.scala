@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.piotrglazar.reminder.api.Routing
-import com.piotrglazar.reminder.client.{LotteryClient}
+import com.piotrglazar.reminder.client.LotteryClient
 import com.piotrglazar.reminder.config.ReminderConfig
 import com.piotrglazar.reminder.service._
 import com.typesafe.scalalogging.LazyLogging

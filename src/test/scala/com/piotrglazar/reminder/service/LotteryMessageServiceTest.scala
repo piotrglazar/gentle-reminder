@@ -2,8 +2,8 @@ package com.piotrglazar.reminder.service
 
 import com.piotrglazar.reminder.client.LotteryClient
 import org.mockito.BDDMockito.given
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{FlatSpec, Matchers}
+import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -39,7 +39,7 @@ class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar
     val message = provider.buildMessage(messageTemplate)
 
     // then
-    Await.result(message, 1 second).get shouldBe "1234"
+    Await.result(message, 1 second).get shouldBe "1\u00A0234 zł"
   }
 
   it should "not build message if prize is lower than threshold" in {
