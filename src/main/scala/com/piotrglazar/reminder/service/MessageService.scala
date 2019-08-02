@@ -30,7 +30,7 @@ class LotteryMessageService(private val client: LotteryClient, private val thres
           logger.info(s"Fetched prize $lowPrize is lower than $threshold. Message will not be generated")
           None
         case prize =>
-          val prettyPrize = numberFormat.format(prize)
+          val prettyPrize = numberFormat.format(prize).replace(",00", "")
           Some(messageTemplate.format(prettyPrize))
       }
   }
