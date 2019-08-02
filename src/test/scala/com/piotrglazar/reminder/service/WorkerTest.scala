@@ -11,8 +11,8 @@ import com.piotrglazar.reminder.service.Worker.Tick
 import com.piotrglazar.reminder.service.WorkerTest.{CapturingSink, DummyUserService}
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FlatSpecLike, Matchers}
 import org.scalatest.concurrent.{Eventually, PatienceConfiguration}
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.time.{Millis, Seconds, Span}
+import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global

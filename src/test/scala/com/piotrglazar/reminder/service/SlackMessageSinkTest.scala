@@ -2,8 +2,8 @@ package com.piotrglazar.reminder.service
 
 import org.mockito.BDDMockito.given
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FlatSpec}
+import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.Future
 

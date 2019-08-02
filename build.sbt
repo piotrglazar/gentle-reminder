@@ -33,7 +33,9 @@ lazy val root = (project in file("."))
       releaseStepCommandAndRemaining("publish"),
       setNextVersion,
       commitNextVersion,
-      pushChanges)
+      pushChanges),
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-language:postfixOps", "-encoding", "utf8",
+      "-Xfatal-warnings")
   )
 
 assemblyMergeStrategy in assembly := {

@@ -5,8 +5,8 @@ import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.http.scaladsl.unmarshalling.PredefinedFromEntityUnmarshallers
 import com.piotrglazar.reminder.service.MessageSink
 import org.mockito.BDDMockito.given
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
+import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.Future
 
