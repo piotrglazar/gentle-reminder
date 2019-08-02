@@ -17,8 +17,9 @@ class FormatTest extends FlatSpec with Matchers {
     val prettyNumber = format.format(number)
       // unify differences between JDKs and other settings
       .replace(",00", "")
+      .replaceAll("\u00A0", " ")
 
     // then
-    prettyNumber shouldBe "10\u00A0000\u00A0000 zł"
+    prettyNumber shouldBe "10 000 000 zł"
   }
 }

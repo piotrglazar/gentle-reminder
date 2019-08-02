@@ -39,7 +39,7 @@ class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar
     val message = provider.buildMessage(messageTemplate)
 
     // then
-    Await.result(message, 1 second).get shouldBe "1\u00A0234 zł"
+    Await.result(message, 1 second).get shouldBe "1 234 zł"
   }
 
   it should "not build message if prize is lower than threshold" in {
