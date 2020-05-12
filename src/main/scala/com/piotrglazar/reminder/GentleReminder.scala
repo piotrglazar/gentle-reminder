@@ -2,7 +2,6 @@ package com.piotrglazar.reminder
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
 import com.piotrglazar.reminder.api.Routing
 import com.piotrglazar.reminder.client.LotteryClient
 import com.piotrglazar.reminder.config.ReminderConfig
@@ -17,7 +16,6 @@ object GentleReminder extends App with LazyLogging {
 
   def run(fullConfig: ReminderConfig): Unit = {
     implicit val system: ActorSystem = ActorSystem("GentleReminder")
-    implicit val materializer: ActorMaterializer = ActorMaterializer()
     implicit val context: ExecutionContextExecutor = system.dispatcher
 
     val slackClient = new SlackClient(fullConfig.slackConfig.token, fullConfig.slackConfig.channelId)

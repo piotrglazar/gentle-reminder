@@ -4,7 +4,7 @@ import sbtrelease.ReleaseStateTransformations._
 lazy val root = (project in file("."))
   .settings(
     name := "gentle-reminder",
-    scalaVersion := "2.12.8",
+    scalaVersion := "2.12.11",
     libraryDependencies ++= Seq(
       Utils.guava,
       Utils.logback,

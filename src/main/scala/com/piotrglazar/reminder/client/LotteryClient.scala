@@ -16,7 +16,6 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.language.postfixOps
 
 class LotteryClient(private val apiUrl: String)(private implicit val system: ActorSystem,
-                                 private implicit val materializer: Materializer,
                                  private implicit val executionContext: ExecutionContextExecutor) extends LazyLogging {
 
   def fetchPrize(): Future[Long] = {

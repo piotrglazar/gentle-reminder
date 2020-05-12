@@ -3,30 +3,31 @@ import sbt._
 object Libraries {
 
   object Core {
-    private val akkaVersion = "2.5.23"
+    private val akkaVersion = "2.6.5"
+    private val akkaHttpVersion = "10.1.12"
 
     lazy val akka: Seq[ModuleID] = Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
       "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-      "com.typesafe.akka" %% "akka-http" % akkaVersion
+      "com.typesafe.akka" %% "akka-http" % akkaHttpVersion
     )
 
     lazy val akkaTest: Seq[ModuleID] = Seq(
       "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
       "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
-      "com.typesafe.akka" %% "akka-http-testkit" % "10.1.8" % Test
+      "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test
     )
   }
 
   object Utils {
-    private val circeVersion = "0.11.1"
+    private val circeVersion = "0.13.0"
     
-    lazy val guava: ModuleID = "com.google.guava" % "guava" % "28.0-jre"
+    lazy val guava: ModuleID = "com.google.guava" % "guava" % "29.0-jre"
     lazy val logback: ModuleID = "ch.qos.logback" % "logback-classic" % "1.3.0-alpha4"
     lazy val config: ModuleID = "com.typesafe" % "config" % "1.3.4"
     lazy val pimpedConfig: ModuleID = "com.github.kxbmap" %% "configs" % "0.4.4"
     lazy val logging: ModuleID = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
-    lazy val scheduling: ModuleID = "com.enragedginger" %% "akka-quartz-scheduler" % "1.8.0-akka-2.5.x"
+    lazy val scheduling: ModuleID = "com.enragedginger" %% "akka-quartz-scheduler" % "1.8.3-akka-2.6.x"
     lazy val slackClient: ModuleID = "com.github.gilbertw1" %% "slack-scala-client" % "0.2.3"
     lazy val circe: Seq[ModuleID] = Seq(
       "io.circe" %% "circe-core",

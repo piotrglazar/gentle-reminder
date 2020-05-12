@@ -89,8 +89,7 @@ class LotteryClientTest extends TestKit(ActorSystem("LotteryClientTest")) with F
   before {
     stubServer = new StubServer().run()
     val url = s"http://localhost:${stubServer.getPort}$endpoint"
-    client = new LotteryClient(url)(system,
-      ActorMaterializer()(system), system.dispatcher)
+    client = new LotteryClient(url)(system, system.dispatcher)
   }
 
   after {
