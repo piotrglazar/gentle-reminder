@@ -1,7 +1,11 @@
 package com.piotrglazar.reminder
 
+import java.io.InputStream
+import java.security.{KeyStore, SecureRandom}
+import javax.net.ssl.{ SSLContext, TrustManagerFactory, KeyManagerFactory }
+
 import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
+import akka.http.scaladsl.{ConnectionContext, Http, HttpsConnectionContext}
 import com.piotrglazar.reminder.api.Routing
 import com.piotrglazar.reminder.client.LotteryClient
 import com.piotrglazar.reminder.config.ReminderConfig
@@ -40,7 +44,11 @@ object GentleReminder extends App with LazyLogging {
 
     SchedulingService.startScheduling(system, fullConfig.jobs, worker)
 
-    val bindingFuture = Http().bindAndHandle(routing.route, fullConfig.runConfig.host, fullConfig.runConfig.port)
+    val https: HttpsConnectionContext = setupHttps()
+
+    Http().setDefaultClientHttpsContext(https)
+    val bindingFuture = Http().bindAndHandle(routing.route, fullConfig.runConfig.host, fullConfig.runConfig.port,
+      connectionContext = https)
 
     logger.info(s"Server is running on port ${fullConfig.runConfig.port}")
     StdIn.readLine()
@@ -55,5 +63,25 @@ object GentleReminder extends App with LazyLogging {
     case Failure(ce) =>
       val exception = ce.configException
       logger.error("Failed to read config", exception)
+  }
+
+  private def setupHttps(): HttpsConnectionContext = {
+    val password: Array[Char] = "JadwisiaScala1$".toCharArray
+
+    val ks: KeyStore = KeyStore.getInstance("PKCS12")
+    val keystore: InputStream = getClass.getClassLoader.getResourceAsStream("gentle-reminder.p12")
+
+    require(keystore != null, "Keystore required!")
+    ks.load(keystore, password)
+
+    val keyManagerFactory: KeyManagerFactory = KeyManagerFactory.getInstance("SunX509")
+    keyManagerFactory.init(ks, password)
+
+    val tmf: TrustManagerFactory = TrustManagerFactory.getInstance("SunX509")
+    tmf.init(ks)
+
+    val sslContext: SSLContext = SSLContext.getInstance("TLS")
+    sslContext.init(keyManagerFactory.getKeyManagers, tmf.getTrustManagers, new SecureRandom)
+    ConnectionContext.https(sslContext)
   }
 }
