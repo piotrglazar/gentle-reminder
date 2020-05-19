@@ -7,7 +7,7 @@ import com.typesafe.scalalogging.LazyLogging
 import configs.{Configs, Result}
 
 object ReminderConfig extends LazyLogging {
-  case class RunConfig(host: String, port: Int)
+  case class RunConfig(host: String, port: Int, maintenancePassword: String)
   case class SlackConfig(token: String, channelId: String)
   case class CertConfig(password: String)
   case class JobConfig(name: String, sink: String, message: String, users: List[String],

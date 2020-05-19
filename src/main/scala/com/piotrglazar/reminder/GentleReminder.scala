@@ -29,7 +29,8 @@ object GentleReminder extends App with LazyLogging {
 
     val slackMessageSink = new SlackMessageSink(slackClient)
 
-    val routing: Routing = new Routing(slackMessageSink)
+    val routing: Routing = new Routing(slackMessageSink,
+      new SecurityService(fullConfig.runConfig.maintenancePassword))
 
     val userService: UserService = new UserService(fullConfig.users)
 
