@@ -2,13 +2,14 @@ package com.piotrglazar.reminder
 
 import java.io.InputStream
 import java.security.{KeyStore, SecureRandom}
-import javax.net.ssl.{ SSLContext, TrustManagerFactory, KeyManagerFactory }
 
+import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{ConnectionContext, Http, HttpsConnectionContext}
 import com.piotrglazar.reminder.api.Routing
 import com.piotrglazar.reminder.client.LotteryClient
 import com.piotrglazar.reminder.config.ReminderConfig
+import com.piotrglazar.reminder.config.ReminderConfig.CertConfig
 import com.piotrglazar.reminder.service._
 import com.typesafe.scalalogging.LazyLogging
 import configs.Result.{Failure, Success}
@@ -44,7 +45,7 @@ object GentleReminder extends App with LazyLogging {
 
     SchedulingService.startScheduling(system, fullConfig.jobs, worker)
 
-    val https: HttpsConnectionContext = setupHttps()
+    val https: HttpsConnectionContext = setupHttps(fullConfig.certConfig)
 
     Http().setDefaultClientHttpsContext(https)
     val bindingFuture = Http().bindAndHandle(routing.route, fullConfig.runConfig.host, fullConfig.runConfig.port,
@@ -65,8 +66,8 @@ object GentleReminder extends App with LazyLogging {
       logger.error("Failed to read config", exception)
   }
 
-  private def setupHttps(): HttpsConnectionContext = {
-    val password: Array[Char] = "JadwisiaScala1$".toCharArray
+  private def setupHttps(certConfig: CertConfig): HttpsConnectionContext = {
+    val password: Array[Char] = certConfig.password.toCharArray
 
     val ks: KeyStore = KeyStore.getInstance("PKCS12")
     val keystore: InputStream = getClass.getClassLoader.getResourceAsStream("gentle-reminder.p12")
