@@ -3,8 +3,8 @@ import sbt._
 object Libraries {
 
   object Core {
-    private val akkaVersion = "2.6.5"
-    private val akkaHttpVersion = "10.1.12"
+    private val akkaVersion = "2.6.12"
+    private val akkaHttpVersion = "10.2.3"
 
     lazy val akka: Seq[ModuleID] = Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,

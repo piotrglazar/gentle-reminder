@@ -48,15 +48,11 @@ object GentleReminder extends App with LazyLogging {
 
     val https: HttpsConnectionContext = setupHttps(fullConfig.certConfig)
 
-    Http().setDefaultClientHttpsContext(https)
-    val bindingFuture = Http().bindAndHandle(routing.route, fullConfig.runConfig.host, fullConfig.runConfig.port,
-      connectionContext = https)
+    Http().newServerAt(fullConfig.runConfig.host, fullConfig.runConfig.port)
+      .enableHttps(https)
+      .bind(routing.route)
 
     logger.info(s"Server is running on port ${fullConfig.runConfig.port}")
-    StdIn.readLine()
-    bindingFuture
-      .flatMap(_.unbind())
-      .onComplete(_ => system.terminate())
   }
 
   ReminderConfig.read() match {
@@ -84,6 +80,6 @@ object GentleReminder extends App with LazyLogging {
 
     val sslContext: SSLContext = SSLContext.getInstance("TLS")
     sslContext.init(keyManagerFactory.getKeyManagers, tmf.getTrustManagers, new SecureRandom)
-    ConnectionContext.https(sslContext)
+    ConnectionContext.httpsServer(sslContext)
   }
 }
