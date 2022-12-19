@@ -50,6 +50,6 @@ class LotteryMessageServiceTest extends FlatSpec with Matchers with MockitoSugar
     val message = provider.buildMessage(messageTemplate)
 
     // then
-    Await.result(message, 1 second) should be an 'empty
+    Await.result(message, 1 second) should be an Symbol("empty")
   }
 }

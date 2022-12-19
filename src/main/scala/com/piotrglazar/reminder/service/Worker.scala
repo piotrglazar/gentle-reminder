@@ -27,9 +27,9 @@ class Worker(sinks: List[MessageSink], jobs: List[JobConfig], private val userSe
 
   private implicit val executor: ExecutionContextExecutor = context.dispatcher
 
-  private val sinkByName = sinks.groupBy(_.name).mapValues(_.head).map(identity)
+  private val sinkByName = sinks.groupBy(_.name).view.mapValues(_.head)
 
-  private val jobByName = jobs.groupBy(_.name).mapValues(_.head).map(identity)
+  private val jobByName = jobs.groupBy(_.name).view.mapValues(_.head)
 
   override def receive: Receive = LoggingReceive(InfoLevel)(workerReceive)
 

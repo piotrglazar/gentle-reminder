@@ -6,7 +6,7 @@ import scala.concurrent.Future
 
 class MessageServiceRegistry(providers: List[MessageService]) extends LazyLogging {
 
-  private val providersByName = providers.groupBy(_.name).mapValues(_.head).map(identity)
+  private val providersByName = providers.groupBy(_.name).view.mapValues(_.head)
 
   def buildMessage(jobName: String, messageTemplate: String,
                    messageProviderName: Option[String]): Future[Option[String]] = {

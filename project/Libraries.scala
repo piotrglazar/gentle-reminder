@@ -3,8 +3,8 @@ import sbt._
 object Libraries {
 
   object Core {
-    private val akkaVersion = "2.6.12"
-    private val akkaHttpVersion = "10.2.3"
+    private val akkaVersion = "2.7.0"
+    private val akkaHttpVersion = "10.4.0"
 
     lazy val akka: Seq[ModuleID] = Seq(
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -25,16 +25,16 @@ object Libraries {
     lazy val guava: ModuleID = "com.google.guava" % "guava" % "29.0-jre"
     lazy val logback: ModuleID = "ch.qos.logback" % "logback-classic" % "1.3.0-alpha4"
     lazy val config: ModuleID = "com.typesafe" % "config" % "1.3.4"
-    lazy val pimpedConfig: ModuleID = "com.github.kxbmap" %% "configs" % "0.4.4"
+    lazy val pimpedConfig: ModuleID = "com.github.kxbmap" %% "configs" % "0.6.1"
     lazy val logging: ModuleID = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
     lazy val scheduling: ModuleID = "com.enragedginger" %% "akka-quartz-scheduler" % "1.8.3-akka-2.6.x"
-    lazy val slackClient: ModuleID = "com.github.gilbertw1" %% "slack-scala-client" % "0.2.3"
+    lazy val slackClient: ModuleID = "com.github.slack-scala-client" %% "slack-scala-client" % "0.4.1"
     lazy val circe: Seq[ModuleID] = Seq(
       "io.circe" %% "circe-core",
       "io.circe" %% "circe-generic",
       "io.circe" %% "circe-parser"
     ).map(_ % circeVersion)
-    lazy val akkaHttpCirce: ModuleID = "de.heikoseeberger" %% "akka-http-circe" % "1.27.0"
+    lazy val akkaHttpCirce: ModuleID = "de.heikoseeberger" %% "akka-http-circe" % "1.40.0-RC3"
   }
 
   object TestUtils {

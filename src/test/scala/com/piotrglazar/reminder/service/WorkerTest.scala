@@ -61,7 +61,7 @@ class WorkerTest extends TestKit(ActorSystem("WorkerTest")) with FlatSpecLike wi
 
     // then
     eventually(PatienceConfiguration.Timeout(Span(10, Seconds)), PatienceConfiguration.Interval(Span(250, Millis))) {
-      sink.receivedMessage.get() should be a 'defined
+      sink.receivedMessage.get() should be a Symbol("defined")
       sink.receivedMessage.get().get shouldEqual "message"
     }
   }

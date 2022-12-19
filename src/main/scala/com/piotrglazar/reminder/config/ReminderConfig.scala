@@ -1,10 +1,9 @@
 package com.piotrglazar.reminder.config
 
-import com.piotrglazar.reminder.config.ReminderConfig.{BusinessConfig, JobConfig, RunConfig, SlackConfig, UserConfig,
-  CertConfig}
+import com.piotrglazar.reminder.config.ReminderConfig.{BusinessConfig, CertConfig, JobConfig, RunConfig, SlackConfig, UserConfig}
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
-import configs.{Configs, Result}
+import configs.{ConfigReader, Configs, Result}
 
 object ReminderConfig extends LazyLogging {
   case class RunConfig(host: String, port: Int, maintenancePassword: String)
@@ -19,12 +18,12 @@ object ReminderConfig extends LazyLogging {
     val config = ConfigFactory.load()
 
     for {
-      runConfig <- Configs[RunConfig].get(config, "app")
-      slackConfig <- Configs[SlackConfig].get(config, "slack")
-      businessConfig <- Configs[BusinessConfig].get(config, "business")
-      jobs <- Configs[List[JobConfig]].get(config, "jobs")
-      users <- Configs[List[UserConfig]].get(config, "users")
-      cert <- Configs[CertConfig].get(config, "cert")
+      runConfig <- ConfigReader[RunConfig].read(config, "app")
+      slackConfig <- ConfigReader[SlackConfig].read(config, "slack")
+      businessConfig <- ConfigReader[BusinessConfig].read(config, "business")
+      jobs <- ConfigReader[List[JobConfig]].read(config, "jobs")
+      users <- ConfigReader[List[UserConfig]].read(config, "users")
+      cert <- ConfigReader[CertConfig].read(config, "cert")
     } yield {
       ReminderConfig(runConfig, slackConfig, businessConfig, jobs, users, cert)
     }

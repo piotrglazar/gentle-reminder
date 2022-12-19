@@ -11,7 +11,7 @@ import scala.util.{Failure, Success}
 class SlackClient(token: String, private val channelId: String)
                  (implicit private val system: ActorSystem, private val context: ExecutionContext) extends LazyLogging {
 
-  private val slack = new SlackApiClient(token)
+  private val slack = SlackApiClient(token)
 
   def sendMessage(message: String): Future[Unit] = {
     val result = slack.postChatMessage(channelId, message)
